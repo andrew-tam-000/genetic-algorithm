@@ -26,30 +26,32 @@ const SORTED_BLUEPRINT_LOOKUP = _(blueprint)
 
 const MUTATION_RATE = 1;
 
-
 const config = {
-
     mutationFunction,
-
     crossoverFunction,
-
     fitnessFunction,
-
     population,
-
     populationSize: 100
 }
 
-const geneticInstance = GeneticAlgorithmConstructor( config );
+const baseInstance = GeneticAlgorithmConstructor( config );
 
-const evolvedPopulation = _.reduce(
-    _.range(0, 500),
-    population => geneticInstance.evolve(),
-    geneticInstance
-);
+_.forEach(
+    _.range(0, 1),
+    () => {
 
-console.log(evolvedPopulation.best());
-console.log(evolvedPopulation.bestScore());
+        const geneticInstance = baseInstance.clone();
+
+        const evolvedPopulation = _.reduce(
+            _.range(0, 900),
+            population => geneticInstance.evolve(),
+            geneticInstance
+        );
+
+        console.log(evolvedPopulation.best());
+        console.log(evolvedPopulation.bestScore());
+    }
+)
 
 
 function crossoverFunction(phenotypeA, phenotypeB) {

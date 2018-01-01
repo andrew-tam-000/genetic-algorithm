@@ -7,7 +7,7 @@ const utilities = require('../utilities');
 
 const NUM_POPULATIONS = 1;
 const SIZE_OF_POPULATION = 100;
-const AGE = 400;
+const AGE = 500;
 
 // Mutating everytime yields the best result
 const MUTATION_RATE = 1;
@@ -20,7 +20,6 @@ const SORTED_BLUEPRINT_LOOKUP = _(blueprint)
     .map( keyName => _.get(blueprint, keyName) )
     .value()
 ;
-
 
 class KnapsackChromosome extends Chromosome {
 
@@ -38,10 +37,13 @@ class KnapsackChromosome extends Chromosome {
     }
 
     createGenes() {
-        return _(_.range(0, NUM_GENES))
-            .map( val => utilities.getRandomInt(0, 2) )
-            .join('')
-        ;
+        return _.join(
+            _.map(
+                _.range( 0, _.size(blueprint) ),
+                () => Math.round(Math.random())
+            ),
+            ''
+        );
     }
 
     calculateFitness() {
@@ -51,7 +53,7 @@ class KnapsackChromosome extends Chromosome {
         const maxWeight = 1000;
 
         const { value: reducedValue, weight: reducedWeight } = _.reduce(
-            _.split(genes, ''),
+            genes.split(''),
             (agg, val, idx) => {
                 if (utilities.toNumber(val)) {
 
@@ -97,12 +99,17 @@ class KnapsackPopulation extends Population {
     }
 };
 
-console.log(
-    _.last(
-        new KnapsackPopulation({
-            maximumSize: SIZE_OF_POPULATION,
-        })
-            .age(AGE)
-            .getMembers()
-    )
+_.forEach(
+    _.range(0, 1),
+    () => {
+        console.log(
+            _.last(
+                new KnapsackPopulation({
+                    maximumSize: SIZE_OF_POPULATION,
+                })
+                    .age(AGE)
+                    .getMembers()
+            )
+        )
+    }
 )
