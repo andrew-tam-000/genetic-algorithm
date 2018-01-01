@@ -1,4 +1,3 @@
-const Chromosome = require('./Chromosome');
 const _ = require('lodash');
 const utilities = require('./utilities');
 
@@ -9,28 +8,18 @@ class Population {
         this.init(...args);
     }
 
-    init({maximumSize, blueprint, members}) {
+    init({maximumSize, members}) {
         !members && this.fill();
         this.sortMembers();
     }
 
-    createProperties({maximumSize, blueprint, members, chromosomeConfig}) {
+    createProperties({maximumSize, members}) {
         Object.defineProperty(
             this,
             '_maximumSize',
             {
                 writable: false,
                 value: maximumSize || _.size(members),
-                enumerable: false
-            }
-        );
-
-        Object.defineProperty(
-            this,
-            '_blueprint',
-            {
-                writable: false,
-                value: blueprint,
                 enumerable: false
             }
         );
@@ -45,27 +34,10 @@ class Population {
             }
         );
 
-        Object.defineProperty(
-            this,
-            '_chromosomeConfig',
-            {
-                writable: false,
-                value: chromosomeConfig,
-                enumerable: true
-            }
-        );
-    }
-
-    getChromosomeConfig() {
-        return this._chromosomeConfig;
     }
 
     getCurrentSize() {
         return _.size(this.getMembers());
-    }
-
-    getBlueprint() {
-        return this._blueprint;
     }
 
     getMaximumSize() {
@@ -83,7 +55,7 @@ class Population {
     sortMembers() {
         this.members = _.sortBy(
             this.members,
-            member => member.getScore()
+            member => member.getFitness()
         );
         return this.getMembers();
     }
@@ -113,18 +85,12 @@ class Population {
     }
 
     addMember(member) {
-        const members = _.concat(this.getMembers(), member);
-        this.members = members;
+        this.members = _.concat(this.getMembers(), member);
         return this.getMembers();
     }
 
     createChromosome() {
-        return new Chromosome(
-            _.assign(
-                { blueprint: this.getBlueprint() },
-                this.getChromosomeConfig()
-            )
-        );
+        throw new Error('Must supply createChromosome method');
     }
 
     fill() {
