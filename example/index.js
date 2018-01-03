@@ -1,9 +1,8 @@
 const blueprint = require('../data.json');
 const _ = require('lodash');
 const util = require('util');
-const Population = require('../Population');
-const Chromosome = require('../Chromosome');
-const utilities = require('../utilities');
+const { Chromosome, Population } = require('../src/index');
+const utilities = require('../src/utilities');
 
 const NUM_POPULATIONS = 1;
 const SIZE_OF_POPULATION = 100;
