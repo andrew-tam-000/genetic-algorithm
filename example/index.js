@@ -22,7 +22,8 @@ const SORTED_BLUEPRINT_LOOKUP = _(blueprint)
 
 class KnapsackChromosome extends Chromosome {
 
-    mutateGenes(genes) {
+    mutateGenes() {
+        const genes = this.getGenes();
         const doMutation = Math.random() <=  MUTATION_RATE;
 
         if (doMutation) {
@@ -30,9 +31,8 @@ class KnapsackChromosome extends Chromosome {
             const mutatedValue = utilities.toNumber(!!!utilities.toNumber(genes.slice(pivot, pivot + 1)));
             return genes.slice(0, pivot) + mutatedValue + genes.slice(pivot + 1);
         }
-        else {
-            return genes;
-        }
+
+        return genes;
     }
 
     createGenes() {
